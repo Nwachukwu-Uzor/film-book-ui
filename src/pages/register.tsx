@@ -1,12 +1,68 @@
-import React from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import Image from "next/image";
+import { AiFillFileImage } from "react-icons/ai";
 
 import { environment, backendBaseUrl } from "@/config/";
+import { Button, TextInput } from "@/components";
+import { SocialSigninButton } from "@/components/SocialSigninButton";
+
+const initialFieldValues = {
+  username: "",
+  password: "",
+};
+
+const validationSchema = Yup.object().shape({
+  username: Yup.string()
+    .required("Username is required")
+    .min(5, "Username should be at least 5 characters"),
+  password: Yup.string()
+    .required("Password is required")
+    .min(5, "Password should be at least 5 characters"),
+});
 
 const Register = () => {
+  const [avatar, setAvatar] = useState<File | null | undefined>(null);
+  const [preview, setPreview] = useState<string | null | undefined>(null);
+  const { values, handleSubmit, handleChange, touched, errors } = useFormik({
+    initialValues: initialFieldValues,
+    validationSchema: validationSchema,
+    onSubmit: async (value) => {},
+  });
+
   const handleGoogleSignin = () => {
     window.open(`${backendBaseUrl}/auth/google`, "_self");
   };
+
+  const handleFacebookSignin = () => {
+    window.open(`${backendBaseUrl}/auth/facebook`, "_self");
+  }
+
+  const handleAvatarChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event?.target?.files?.[0];
+    if (!file) {
+      return;
+    }
+    console.log("here");
+    setAvatar(file);
+  };
+
+  // create a preview as a side effect, whenever selected file is changed
+  useEffect(() => {
+    if (!avatar) {
+      setPreview(undefined);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(avatar);
+    console.log(objectUrl);
+    setPreview(objectUrl);
+
+    // free memory when ever this component is unmounted
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [avatar]);
+
   return (
     <section className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="grid grid-cols-1 lg:grid-cols-2 w-[95%] max-w-[1500px]">
@@ -34,22 +90,70 @@ const Register = () => {
             <h1 className="text-amber-700 text-lg lg:text-2xl font-semibold my-3">
               Create an account
             </h1>
-            <button
-              className="border-2 text-amber-700 border-amber-700 px-4 py-2 w-[70%] rounded-md hover:opacity-30 flex justify-center items-center gap-2 mx-auto my-3"
-              onClick={handleGoogleSignin}
-            >
-              <Image src="/images/google.png" alt="" height="15" width="15" />
-              Signup with Google
-            </button>
-            <form className="">
-              <div className="flex flex-col gap-2">
-                <label>Name: </label>
+            <div className="flex items-center gap-2">
+              <SocialSigninButton
+                title="Sign up with Google"
+                handleClick={handleGoogleSignin}
+                imageUrl="/images/google.png"
+              />
+              <SocialSigninButton
+                title="Sign up with Facebook"
+                handleClick={handleFacebookSignin}
+                imageUrl="/images/facebook.png"
+              />
+            </div>
+            <form className="my-2 flex flex-col gap-2" onSubmit={handleSubmit}>
+              <TextInput
+                value={values?.username}
+                handleChange={handleChange}
+                touched={Boolean(touched?.username)}
+                isError={Boolean(errors?.username) ?? false}
+                name="username"
+                label="Username"
+                error={errors?.username ?? ""}
+                id="username"
+                type="text"
+              />
+              <TextInput
+                value={values?.password}
+                handleChange={handleChange}
+                touched={Boolean(touched?.password)}
+                isError={Boolean(errors?.password) ?? false}
+                name="password"
+                label="Password"
+                error={errors?.password ?? ""}
+                id="password"
+                type="password"
+              />
+              <div className="my-2 flex justify-between">
+                <label
+                  htmlFor="avatar"
+                  className="flex flex-col gap-2 items-center w-fit lg:flex-row cursor-pointer"
+                >
+                  <span className="font-bold">Select Avatar: </span>
+                  <span className="h-[40px] w-[40px] bg-yellow-100 rounded-full flex items-center justify-center">
+                    <AiFillFileImage className="text-yellow-500" />
+                  </span>
+                </label>
                 <input
-                  type="text"
-                  placeholder="Name"
-                  className="border p-1 rounded-md focus:border-amber-600 focus:border-2 border-gray-300 focus:outline-none"
+                  type="file"
+                  accept=".jpg,.png,.jpeg"
+                  hidden
+                  name="avatar"
+                  id="avatar"
+                  onChange={handleAvatarChange}
                 />
+                {preview ? (
+                  <Image
+                    src={preview}
+                    alt="avatar"
+                    height="300"
+                    width="300"
+                    className="h-[50px] w-[50px] object-cover rounded-full"
+                  />
+                ) : null}
               </div>
+              <Button title="Submit" type="submit" />
             </form>
           </div>
         </div>

@@ -1,4 +1,8 @@
-import React, { useState, ChangeEvent, useEffect } from "react";
+import { GetStaticProps } from "next";
+import { useRouter } from "next/router";
+import React, { useState, ChangeEvent, useEffect, FC } from "react";
+import Swal from "sweetalert2";
+import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Image from "next/image";
@@ -8,36 +12,47 @@ import { environment, backendBaseUrl } from "@/config/";
 import { Button, TextInput } from "@/components";
 import { SocialSigninButton } from "@/components/SocialSigninButton";
 
+interface Props {
+  baseUrl: string;
+}
+
+interface UserRegisterationResponse {
+  data: {
+    message: string;
+  };
+}
+
 const initialFieldValues = {
   username: "",
   password: "",
+  email: "",
 };
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
     .required("Username is required")
     .min(5, "Username should be at least 5 characters"),
+  email: Yup.string()
+    .required("Email is required")
+    .email("Please provide a valid email address"),
   password: Yup.string()
     .required("Password is required")
     .min(5, "Password should be at least 5 characters"),
 });
 
-const Register = () => {
+const Register: FC<Props> = ({ baseUrl }) => {
+  const router = useRouter();
+
   const [avatar, setAvatar] = useState<File | null | undefined>(null);
   const [preview, setPreview] = useState<string | null | undefined>(null);
-  const { values, handleSubmit, handleChange, touched, errors } = useFormik({
-    initialValues: initialFieldValues,
-    validationSchema: validationSchema,
-    onSubmit: async (value) => {},
-  });
 
   const handleGoogleSignin = () => {
-    window.open(`${backendBaseUrl}/auth/google`, "_self");
+    window.open(`${baseUrl}/auth/google`, "_self");
   };
 
   const handleFacebookSignin = () => {
-    window.open(`${backendBaseUrl}/auth/facebook`, "_self");
-  }
+    window.open(`${baseUrl}/auth/facebook`, "_self");
+  };
 
   const handleAvatarChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event?.target?.files?.[0];
@@ -47,6 +62,48 @@ const Register = () => {
     console.log("here");
     setAvatar(file);
   };
+
+  const { values, handleSubmit, handleChange, touched, errors, isSubmitting } =
+    useFormik({
+      initialValues: initialFieldValues,
+      validationSchema: validationSchema,
+      onSubmit: async (value, { resetForm }) => {
+        if (!avatar) {
+          Swal.fire({
+            title: "Error",
+            text: "Please provide an avatar image",
+          });
+        }
+        try {
+          const formData = new FormData();
+          formData.append("email", value.email);
+          formData.append("password", value.password);
+          formData.append("username", value.username);
+
+          const response = await axios.post<UserRegisterationResponse>(
+            `${baseUrl}/auth/register`,
+            formData
+          );
+          if (response.status === 201) {
+            Swal.fire({
+              title: "Registeration Successful",
+              text: response?.data?.data?.message,
+              didClose: () => {
+                router.push(`/register/success?email=${value?.email}`);
+              },
+            });
+            setAvatar(null);
+            resetForm();
+          }
+        } catch (error: any) {
+          const message = error?.response?.data?.message ?? error?.message;
+          Swal.fire({
+            title: "Error",
+            text: message,
+          });
+        }
+      },
+    });
 
   // create a preview as a side effect, whenever selected file is changed
   useEffect(() => {
@@ -115,6 +172,17 @@ const Register = () => {
                 type="text"
               />
               <TextInput
+                value={values?.email}
+                handleChange={handleChange}
+                touched={Boolean(touched?.email)}
+                isError={Boolean(errors?.email) ?? false}
+                name="email"
+                label="email"
+                error={errors?.email ?? ""}
+                id="email"
+                type="text"
+              />
+              <TextInput
                 value={values?.password}
                 handleChange={handleChange}
                 touched={Boolean(touched?.password)}
@@ -153,13 +221,36 @@ const Register = () => {
                   />
                 ) : null}
               </div>
-              <Button title="Submit" type="submit" />
+              {isSubmitting ? (
+                <p className="">
+                  <svg
+                    className="animate-spin h-5 w-5 mr-3 ..."
+                    viewBox="0 0 24 24"
+                  ></svg>
+                  Submitting
+                </p>
+              ) : (
+                <Button title="Submit" type="submit" />
+              )}
             </form>
           </div>
         </div>
       </div>
     </section>
   );
+};
+
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const baseUrl =
+    process.env.ENVIRONMENT === "Development"
+      ? process.env.SERVER_BASE_URL_DEVELOPEMENT
+      : process.env.SERVER_BASE_URL_PRODUCTION;
+
+  return {
+    props: {
+      baseUrl: baseUrl ?? "",
+    },
+  };
 };
 
 export default Register;

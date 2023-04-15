@@ -153,7 +153,7 @@ const Signin: FC<Props> = ({ baseUrl }) => {
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const baseUrl =
     process.env.ENVIRONMENT === "Development"
-      ? process.env.SERVER_BASE_URL_DEVELOPEMENT
+      ? process.env.SERVER_BASE_URL_DEVELOPMENT
       : process.env.SERVER_BASE_URL_PRODUCTION;
 
   return {

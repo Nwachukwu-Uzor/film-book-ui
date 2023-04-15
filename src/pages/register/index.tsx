@@ -8,7 +8,6 @@ import * as Yup from "yup";
 import Image from "next/image";
 import { AiFillFileImage } from "react-icons/ai";
 
-import { environment, backendBaseUrl } from "@/config/";
 import { Button, TextInput } from "@/components";
 import { SocialSigninButton } from "@/components/SocialSigninButton";
 
@@ -134,7 +133,7 @@ const Register: FC<Props> = ({ baseUrl }) => {
           />
           <div className="absolute left-0 right-0 bottom-8 flex flex-col items-center text-white gap-2 p-4">
             <h1 className="text-xl lg:text-3xl font-semibold">
-              Creating experiences worldwide {environment}
+              Creating experiences worldwide
             </h1>
             <p className="text-center">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

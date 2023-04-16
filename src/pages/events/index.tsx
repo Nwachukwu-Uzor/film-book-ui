@@ -29,11 +29,14 @@ interface EventsListApiResponse extends Props {}
 const index: FC<Props> = ({ events, totalCount, page, totalPages }) => {
   return (
     <section className="flex items-center justify-center">
-      <h1>Events</h1>
-      <div></div>
-      {events?.map((event) => (
-        <EventCard {...event} key={event?._id} />
-      ))}
+      <div className="w-[80%] max-w-[1200px] py-4">
+        <h1 className="text-xl lg:text-3xl font-bold my-2">Events</h1>
+        <div className="grid md:grid-cols my-3 lg:grid-cols-3 gap-2 lg:gap-4">
+          {events?.map((event) => (
+            <EventCard {...event} key={event?._id} />
+          ))}
+        </div>
+      </div>
     </section>
   );
 };

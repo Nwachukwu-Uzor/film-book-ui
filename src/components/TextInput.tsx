@@ -24,28 +24,7 @@ export const TextInput: FC<Props> = ({
   error,
   type = "text",
 }) => (
-  // <div>
   <div className="relative mt-6">
-    {/* <input
-        type={type}
-        className="peer w-full relative border px-2 py-2 rounded-md focus:border-amber-600 focus:border-2 border-gray-300 focus:outline-none"
-        name={name}
-        id={id}
-        value={value}
-        placeholder=""
-        onChange={handleChange}
-      />
-      <label
-        htmlFor={name}
-        className={`absolute text-sm left-0 ml-1 px-1 top-[50%] -translate-y-[50%] peer-focus:top-0 bg-transparent peer-focus:bg-white duration-100 ease-linear peer-placeholder-shown:translate-y-0 peer-placeholder-shown:text-base peer-focus:text-black peer-placeholder-shown:text-gray-500 peer-focus:ml-1 peer-focus:-translate-y-[50%] peer-focus:px-1 peer-focus:text-sm`}
-      >
-        {label}
-      </label>
-    </div>
-    {touched && isError ? (
-      <p className="my-1 text-sm text-red-700">{error}</p>
-    ) : null}
-  </div> */}
     <div className="relative">
       <input
         id={id}
@@ -53,7 +32,6 @@ export const TextInput: FC<Props> = ({
         placeholder=" "
         value={value}
         onChange={handleChange}
-        // disabled={disabled}
         type={type}
         name={name}
         autoComplete="off"

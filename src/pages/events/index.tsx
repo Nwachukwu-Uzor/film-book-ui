@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { GetStaticProps } from "next";
 import axios from "axios";
-import EventCard from "@/components/EventCard";
+import { EventCard, Header } from "@/components/";
 
 export interface Event {
   _id: string;
@@ -30,7 +30,7 @@ const index: FC<Props> = ({ events, totalCount, page, totalPages }) => {
   return (
     <section className="flex items-center justify-center">
       <div className="w-[80%] max-w-[1200px] py-4">
-        <h1 className="text-xl lg:text-3xl font-bold my-2">Events</h1>
+        <Header text=" Events" level={2} />
         <div className="grid md:grid-cols my-3 lg:grid-cols-3 gap-2 lg:gap-4">
           {events?.map((event) => (
             <EventCard {...event} key={event?._id} />

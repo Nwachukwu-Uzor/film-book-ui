@@ -43,6 +43,16 @@ const EventDetails: FC<EventDetailsProp> = ({
           width="200"
           className="w-full h-auto max-h-[50vh] object-cover my-3"
         />
+        <div className="flex gap-1 items-center my-2">
+          <strong className="flex-1">Starts</strong>
+          <MdOutlineDateRange />
+          <span>{displayStartDate}</span>
+        </div>
+        <div className="flex gap-1 items-center my-2">
+          <strong className="flex-1">Ends</strong>
+          <MdOutlineDateRange />
+          <span>{displayEndDate}</span>
+        </div>
         <p>{description}</p>
         <h3 className="text-lg mt-4 lg:text-xl font-bold uppercase">Photos</h3>
         <div className="my-3 grid lg:grid-cols-3 gap-2 lg:gap-3 items-stretch">
@@ -52,7 +62,7 @@ const EventDetails: FC<EventDetailsProp> = ({
               alt={name}
               height="200"
               width="200"
-              className="w-full h-auto max-h-[50vh] object-cover my-3"
+              className="w-full h-auto max-h-[50vh] object-cover my-3 border shadow-sm hover:scale-105 duration-300 rounded-md cursor-pointer"
               key={image?._id}
             />
           ))}

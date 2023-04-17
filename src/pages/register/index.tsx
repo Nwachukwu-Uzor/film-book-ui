@@ -112,7 +112,6 @@ const Register: FC<Props> = ({ baseUrl }) => {
     }
 
     const objectUrl = URL.createObjectURL(avatar);
-    console.log(objectUrl);
     setPreview(objectUrl);
 
     // free memory when ever this component is unmounted
@@ -158,7 +157,10 @@ const Register: FC<Props> = ({ baseUrl }) => {
                 imageUrl="/images/facebook.png"
               />
             </div>
-            <form className="my-2 flex flex-col gap-2" onSubmit={handleSubmit}>
+            <form
+              className="my-2 flex flex-col gap-2 bg-white mx-auto p-3 shadow-md border-0.5 rounded-md"
+              onSubmit={handleSubmit}
+            >
               <TextInput
                 value={values?.username}
                 handleChange={handleChange}

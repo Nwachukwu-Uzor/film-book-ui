@@ -6,7 +6,7 @@ import { MdOutlineDateRange } from "react-icons/md";
 
 const MAXIMUM_DESCRIPTION_CHARACTERS_TO_SHOW = 50;
 
-const EventCard: FC<Event> = ({
+export const EventCard: FC<Event> = ({
   name,
   description,
   banner,
@@ -67,5 +67,3 @@ const EventCard: FC<Event> = ({
     </div>
   );
 };
-
-export default EventCard;

@@ -4,6 +4,7 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import Image from "next/image";
 import { MdOutlineDateRange } from "react-icons/md";
 import { Event } from "./";
+import { Header } from "@/components";
 
 interface EventDetailsProp extends Event {
   galleryImages: { url: string; _id: string }[];
@@ -24,6 +25,7 @@ const EventDetails: FC<EventDetailsProp> = ({
   galleryImages,
   startDate,
   endDate,
+  code,
 }) => {
   const [displayStartDate, setDisplayStartDate] = useState("");
   const [displayEndDate, setDisplayEndDate] = useState("");
@@ -35,7 +37,8 @@ const EventDetails: FC<EventDetailsProp> = ({
   return (
     <section className="flex justify-center items-center">
       <div className="w-[90%] max-w-[1200px] my-3">
-        <h2 className="text-lg lg:text-xl font-bold uppercase">{name}</h2>
+        <Header text={name} level={3} />
+        <Header text={`CODE: ${code}`} level={1} />
         <Image
           src={banner?.url}
           alt="description"

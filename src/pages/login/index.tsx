@@ -10,7 +10,7 @@ import { AiFillFileImage } from "react-icons/ai";
 
 import { environment, backendBaseUrl } from "@/config/";
 import { Button, TextInput } from "@/components";
-import { SocialSigninButton } from "@/components/SocialSigninButton";
+import { SocialSigninButton } from "@/components/socialSigninButton";
 
 interface Props {
   baseUrl: string;

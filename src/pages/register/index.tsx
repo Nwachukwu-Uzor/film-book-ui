@@ -9,7 +9,7 @@ import Image from "next/image";
 import { AiFillFileImage } from "react-icons/ai";
 
 import { Button, TextInput } from "@/components";
-import { SocialSigninButton } from "@/components/SocialSigninButton";
+import { SocialSigninButton } from "@/components/socialSigninButton";
 
 interface Props {
   baseUrl: string;

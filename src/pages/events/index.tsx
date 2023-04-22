@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { GetStaticProps } from "next";
 import axios from "axios";
 import { EventCard, Header } from "@/components/";
@@ -36,6 +36,7 @@ const index: FC<Props> = ({ events, totalCount, page, totalPages }) => {
             <EventCard {...event} key={event?._id} />
           ))}
         </div>
+        
       </div>
     </section>
   );

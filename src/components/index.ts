@@ -1,5 +1,6 @@
-export { TextInput } from "./TextInput";
-export { Button } from "./Button";
-export { Container } from "./Container";
-export { Header } from "./Header";
-export {EventCard } from "./EventCard";
+export { TextInput } from "./textInput";
+export { Button } from "./button";
+export { Container } from "./container";
+export { Header } from "./header";
+export { EventCard } from "./eventCard";
+export { Modal } from "./modal";

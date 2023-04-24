@@ -1,0 +1,1 @@
+export { fetchTicketsForEvent } from "./fetchTicketForEvent";

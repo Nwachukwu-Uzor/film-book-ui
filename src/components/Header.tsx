@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 
 const levels = {
+  0.5: "lg:text-lg",
   1: "text-lg lg:text-xl",
   2: "text-lg lg:text-2xl",
   3: "text-xl lg:text-2xl",
@@ -16,7 +17,7 @@ const colors = {
 };
 
 interface Props {
-  level?: 1 | 2 | 3 | 4;
+  level?: 0.5 | 1 | 2 | 3 | 4;
   customClasses?: string;
   text: string;
   color?: "red" | "green" | "black" | "white" | "blue";

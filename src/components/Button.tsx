@@ -1,19 +1,45 @@
-import React, { MouseEvent, FC } from "react";
+import React, { FC, MouseEvent, ReactNode } from "react";
 
-interface Props {
-  title: string;
-  type?: "button" | "submit" | "reset" | undefined;
-  handleClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+interface ButtonProps {
+  color?: "red" | "green" | "yellow" | "blue" | "black" | "white";
+  text: string;
+  handleClick?: (event?: MouseEvent) => void;
+  type?: "button" | "submit" | "reset";
+  full?: boolean;
+  icon?: ReactNode;
+  iconPosition?: "start" | "end";
 }
 
-export const Button: FC<Props> = ({ title, handleClick, type = "button" }) => {
+const buttonColors = {
+  red: "bg-red-800 active:ring-red-800 active:ring-2 text-white",
+  green: "bg-green-800 active:ring-green-800 active:ring-2 text-white",
+  yellow: "bg-yellow-800 active:ring-yellow-800 active:ring-2 text-white",
+  black: "bg-black active:ring-black active:ring-2 text-white",
+  blue: "bg-blue-800 active:ring-blue-800 active:ring-2 text-white",
+  white: "bg-white active:ring-white active:ring-2 text-black",
+};
+
+export const Button: FC<ButtonProps> = ({
+  type,
+  color,
+  text,
+  full,
+  icon,
+  iconPosition,
+  handleClick,
+}) => {
   return (
     <button
-      className="px-3 py-2 bg-yellow-500 text-white rounded-md active:ring-2 active:ring-yellow-500 active:opacity-75 hover:opacity-75 cursor-pointer"
+      className={`py-2 px-3 lg:px-4 flex items-center justify-center gap-1 lg:gap-2 rounded-md my-2 duration-150 ${
+        full ? "w-full" : ""
+      } ${color ? buttonColors[color] : buttonColors["black"]} ${
+        icon ? (iconPosition === "end" ? "flex-row-reverse" : "") : ""
+      }`}
       onClick={handleClick}
-      type={type}
+      type={type ?? "button"}
     >
-      {title}
+      {icon}
+      {text}
     </button>
   );
 };

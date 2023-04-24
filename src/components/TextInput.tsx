@@ -4,12 +4,12 @@ import React, { ChangeEvent, FC } from "react";
 interface Props {
   value: string;
   handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  isError: boolean;
-  touched: boolean;
+  isError?: boolean;
+  touched?: boolean;
   label: string;
   name: string;
   id?: string;
-  error: string;
+  error?: string;
   type?: string;
 }
 

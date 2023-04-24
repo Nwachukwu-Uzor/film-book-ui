@@ -16,7 +16,7 @@ export const Modal: FC<ModalProps> = ({ children, open, handleClose }) => {
             onClick={handleClose}
           ></div>
           <div
-            className={`relative z-50 w-[90%] max-w-[500px] flex items-center justify-center h-fit`}
+            className={`relative z-50 w-[90%] max-w-[800px] flex items-center justify-center h-fit`}
           >
             {children}
           </div>

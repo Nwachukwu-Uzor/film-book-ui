@@ -57,7 +57,7 @@ export const EventCard: FC<Event> = ({
             Details
           </Link>
           <Link
-            href={`/book/${encodeURIComponent(_id)}`}
+            href={`/events/${encodeURIComponent(_id)}?book=${true}`}
             className="p-2 lg:px-4 border-2 border-amber-900 hover:bg-amber-900 text-amber-900 font-semibold hover:text-white duration-300 rounded-md"
           >
             Book
